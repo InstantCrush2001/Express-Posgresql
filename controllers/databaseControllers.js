@@ -1,7 +1,15 @@
 const db = require("../db/queries");
 
 async function getUsernames(req, res) {
-  const usernames = await db.getAllUsernames();
+  const search = req.query.search;
+  let usernames;
+
+  if (search) {
+    usernames = await db.searchUsernames(search);
+  } else {
+    usernames = await db.getAllUsernames();
+  }
+
   res.send("Usernames: " + usernames.map((user) => user.username).join(", "));
 }
 
